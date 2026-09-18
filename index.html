@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mini App</title>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #f4f4f5);
+            --text-color: var(--tg-theme-text-color, #222);
+            --hint-color: var(--tg-theme-hint-color, #707579);
+            --button-color: var(--tg-theme-button-color, #2481cc);
+            --button-text-color: var(--tg-theme-button-text-color, #fff);
+            --card-bg: var(--tg-theme-secondary-bg-color, #ffffff);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 70px; /* Tab bar နေရာလွတ် */
+        }
+
+        .page {
+            display: none;
+            padding: 16px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* Search Box */
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+        .btn {
+            background-color: var(--button-color);
+            color: var(--button-text-color);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Cards & Lists */
+        .card {
+            background-color: var(--card-bg);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Game Grid */
+        .game-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .game-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        /* Bottom Tab Bar */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--card-bg);
+            display: flex;
+            border-top: 1px solid #ddd;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+        }
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--hint-color);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .tab-item.active {
+            color: var(--button-color);
+            font-weight: bold;
+        }
+
+        /* Profile Section */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 auto 10px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- စာမျက်နှာ (၁) - Home & Games -->
+    <div id="page-home" class="page active">
+        <h2>YouTube Search</h2>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="ဗီဒီယို ရှာရန်...">
+            <button class="btn" onclick="searchYouTube()">ရှာမည်</button>
+        </div>
+        <div id="searchResults" style="margin-bottom: 20px;">
+            <!-- YouTube ရလဒ်များ ဝင်မည့်နေရာ -->
+            <p style="color: var(--hint-color); font-size: 14px;">ရှာဖွေထားသော ဗီဒီယိုများ यहाँ ပေါ်လာပါမည်။</p>
+        </div>
+
+        <h2>ဂိမ်းအမျိုးအစားများ</h2>
+        <div class="game-grid">
+            <div class="game-card" onclick="alert('Color Block ဂိမ်း ဖွင့်မည်')">🧱 Color Block ဂိမ်း</div>
+            <div class="game-card" onclick="alert('Snake Lite (Multiplayer) ဖွင့်မည်')">🐍 Snake Lite (Multiplayer)</div>
+            <div class="game-card" onclick="alert('Puzzle ဂိမ်း ဖွင့်မည်')">🧩 Puzzle ဂိမ်း</div>
+        </div>
+    </div>
+
+    <!-- စာမျက်နှာ (၂) - Rewards & Tasks -->
+    <div id="page-tasks" class="page">
+        <h2>နေ့စဉ်ဆုလာဘ် (Daily Check-in)</h2>
+        <div class="card">
+            <p>ယနေ့အတွက် ဆုလာဘ်ရယူရန် နှိပ်ပါ</p>
+            <button class="btn" onclick="claimDaily()">Check-in (+10 Coins)</button>
+        </div>
+
+        <h2>သူငယ်ချင်းမိတ်ဆက်ခြင်း (Referral)</h2>
+        <div class="card">
+            <p>သူငယ်ချင်း 5 ယောက် မိတ်ဆက်ပါ (0/5)</p>
+            <button class="btn" onclick="shareRef()">Link မျှဝေရန်</button>
+        </div>
+
+        <h2>လုပ်ငန်းတာဝန်များ (Tasks)</h2>
+        <div class="card">
+            <p>ကြော်ငြာကြည့်ရန် (0 / 20)</p>
+            <button class="btn" onclick="watchAd()">ကြော်ငြာကြည့်မည်</button>
+        </div>
+    </div>
+
+    <!-- စာမျက်နှာ (၃) - Profile & Wallet -->
+    <div id="page-profile" class="page">
+        <div class="profile-header">
+            <div class="profile-avatar" id="userAvatar"></div>
+            <h3 id="userName">User Name</h3>
+            <p id="userId" style="color: var(--hint-color); font-size: 12px;"></p>
+        </div>
+
+        <h2>ငွေပမာဏ နှင့် လက်ကျန်</h2>
+        <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>စုစုပေါင်း လက်ကျန်:</span>
+            <strong id="userBalance" style="font-size: 18px; color: var(--button-color);">0 Coins</strong>
+        </div>
+    </div>
+
+    <!-- Bottom Tab Navigation -->
+    <nav class="tab-bar">
+        <button class="tab-item active" onclick="switchPage('home', this)">🏠 Home</button>
+        <button class="tab-item" onclick="switchPage('tasks', this)">🎁 Tasks</button>
+        <button class="tab-item" onclick="switchPage('profile', this)">👤 Profile</button>
+    </nav>
+
+    <script>
+        // Telegram Web App Initialization
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // User Data ထည့်သွင်းခြင်း (Telegram ထဲမှ ရယူရန်)
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            let user = tg.initDataUnsafe.user;
+            document.getElementById('userName').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+            document.getElementById('userId').innerText = 'ID: ' + user.id;
+        } else {
+            document.getElementById('userName').innerText = 'Guest User';
+            document.getElementById('userId').innerText = 'ID: 12345678';
+        }
+
+        // Page Switching Logic
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+
+            document.getElementById('page-' + pageId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // Placeholder Functions (နောက်ပိုင်း Firebase / API ချိတ်ရန်)
+        function searchYouTube() {
+            let query = document.getElementById('searchInput').value;
+            if(!query) return alert('ရှာလိုသည့် စာသားထည့်ပါ');
+            // ကိုကိုပေးထားတဲ့ YouTube Key ဖြင့် Backend မှတဆင့် API ခေါ်ရမည့်နေရာ
+            alert('ရှာဖွေနေသည်: ' + query);
+        }
+
+        function claimDaily() {
+            alert('နေ့စဉ်ဆုလာဘ် ရယူပြီးပါပြီ!');
+        }
+
+        function shareRef() {
+            let refLink = "https://t.me/your_bot_username?start=ref123";
+            alert('Referral Link ကူးယူပြီးပါပြီ: ' + refLink);
+        }
+
+        function watchAd() {
+            alert('ကြော်ငြာစတင်ကြည့်ရှုနေပါပြီ (Progress: 1/20)');
+        }
+    </script>
+</body>
+</html>
