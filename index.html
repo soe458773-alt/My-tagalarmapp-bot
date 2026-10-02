@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Video Player & Multi-Ads</title>
+    <title>3D Video Player & Ads</title>
     
-    <!-- Banner Ad Script -->
-    <script src="https://pl31604427.profitableratecpmnetwork.com/d0/72/a9/d072a9229a21dff64042f998996328ec.js"></script>
+    <!-- Banner Ad Script (ပေးထားသော 728x90 Script အသစ်) -->
+    <script>
+      atOptions = {
+        'key' : 'ec6ab745de4ed805bc70c1157f580126',
+        'format' : 'iframe',
+        'height' : 90,
+        'width' : 728,
+        'params' : {}
+      };
+    </script>
+    <script src="https://www.highrevenueformat.com/ec6ab745de4ed805bc70c1157f580126/invoke.js"></script>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,11 +29,12 @@
         
         .banner-ad-container {
             position: absolute; bottom: 0; width: 100%; display: flex; justify-content: center; background: #0f172a; z-index: 6; padding: 5px 0; border-top: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
         }
 
         #ad-modal {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.92); display: flex; flex-direction: column;
+            background: rgba(3, 7, 18, 0.95); display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 10; text-align: center; padding: 20px;
             backdrop-filter: blur(15px);
         }
@@ -32,32 +42,25 @@
             background: linear-gradient(145deg, #1e293b, #0f172a); 
             padding: 35px 25px; border-radius: 20px; width: 90%; max-width: 360px; 
             border: 1px solid rgba(255, 255, 255, 0.1); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
         }
-        .ad-box h3 { color: #f87171; margin-bottom: 10px; font-size: 20px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .ad-box h3 { color: #f87171; margin-bottom: 10px; font-size: 20px; font-weight: 700; }
         .ad-box p { color: #94a3b8; font-size: 13px; margin-bottom: 15px; }
         
-        .timer-text { font-size: 32px; font-weight: 800; margin: 15px 0; color: #fbbf24; text-shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
+        .timer-text { font-size: 32px; font-weight: 800; margin: 15px 0; color: #fbbf24; }
         
         .ad-link-btn { 
             display: block; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 14px; text-decoration: none; border-radius: 12px; margin-top: 15px; font-weight: bold; font-size: 15px;
             box-shadow: 0 6px 0 #075985, 0 10px 20px rgba(0,0,0,0.4);
-            transition: all 0.1s ease; cursor: pointer;
+            cursor: pointer;
         }
-        .ad-link-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #075985, 0 5px 10px rgba(0,0,0,0.4);
-        }
+        .ad-link-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #075985; }
 
         #start-video-btn { 
             display: none; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 15px; 
             box-shadow: 0 6px 0 #15803d, 0 10px 20px rgba(0,0,0,0.4);
-            transition: all 0.1s ease;
         }
-        #start-video-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #15803d, 0 5px 10px rgba(0,0,0,0.4);
-        }
+        #start-video-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #15803d; }
     </style>
 </head>
 <body>
@@ -73,18 +76,8 @@
             <div class="video-title" id="v-title">✨ ဗီဒီယိုအမည် ဖော်ပြမည်...</div>
         </div>
 
-        <div class="banner-ad-container">
-            <script>
-              atOptions = {
-                'key' : '75ad30351c33a0956821048854d2cb81',
-                'format' : 'iframe',
-                'height' : 60,
-                'width' : 468,
-                'params' : {}
-              };
-            </script>
-            <script src="https://www.highrevenueformat.com/75ad30351c33a0956821048854d2cb81/invoke.js"></script>
-        </div>
+        <!-- Banner Ad Container -->
+        <div class="banner-ad-container" id="banner-box"></div>
 
         <div id="ad-modal">
             <div class="ad-box">
@@ -93,8 +86,8 @@
                 
                 <div class="timer-text"><span id="countdown">20</span> စက္ကန့်</div>
 
-                <!-- Multi-Ads Clickable Button -->
-                <a id="dynamic-ad-btn" onclick="openNextAd()" class="ad-link-btn">✨ ကြော်ငြာလင့်ခ်သို့ သွားရန် 🚀</a>
+                <!-- Direct Link ခလုတ် (နှိပ်လိုက်လျှင် ပွင့်ရန်) -->
+                <a onclick="openDirectAd()" class="ad-link-btn">✨ ကြော်ငြာလင့်ခ်သို့ သွားရန် 🚀</a>
 
                 <button id="start-video-btn" onclick="startWatchingVideo()">▶️ ဗီဒီယို စတင်ကြည့်မည် 🎬</button>
             </div>
@@ -102,29 +95,21 @@
     </div>
 
     <script>
-        // 🔗 သင်ထည့်လိုသည့် ကြော်ငြာလင့်ခ်များ (Adsterra Direct Links များကို ဤနေရာတွင် လိုသလောက်ထည့်နိုင်သည်)
-        const adLinks = [
-            "https://www.profitableratecpmnetwork.com/a6vbatse4?key=03094757ebd8396266ebed50dfeb6e92",
-            "https://www.profitableratecpmnetwork.com/another-link-1", // လိုအပ်ပါက အစားထိုးရန်
-            "https://www.profitableratecpmnetwork.com/another-link-2"  // လိုအပ်ပါက အစားထိုးရန်
-        ];
-        
-        let currentAdIndex = 0;
+        // 🔗 ပေးထားသော Adsterra Direct Link အမှန်
+        const directAdUrl = "https://www.profitableratecpmnetwork.com/a6vbatse4?key=03094757ebd8396266ebed50dfeb6e92";
 
-        function openNextAd() {
-            // လက်ရှိလင့်ခ်ကို New Tab ဖြင့် ဖွင့်မည်
-            window.open(adLinks[currentAdIndex], '_blank');
-            
-            // နောက်တစ်ကြိမ် နှိပ်လျှင် စာရင်းထဲမှ နောက်လင့်ခ်သို့ ပြောင်းသွားမည် (အကုန်လည်ပတ်စေရန်)
-            currentAdIndex = (currentAdIndex + 1) % adLinks.length;
+        function openDirectAd() {
+            // New Tab ဖြင့် တိုက်ရိုက်ပွင့်စေရန်
+            window.open(directAdUrl, '_blank');
         }
 
+        // URL ထဲမှ ဗီဒီယိုနာမည်ကို ဖမ်းယူဖော်ပြခြင်း
         const urlParams = new URLSearchParams(window.location.search);
         const videoTitleParam = urlParams.get('title');
         const videoTitle = videoTitleParam ? decodeURIComponent(videoTitleParam) : "ဗီဒီယိုအသစ်";
         document.getElementById('v-title').textContent = "📌 " + videoTitle;
 
-        const videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4";
+        const videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // လိုအပ်ပါက ဗီဒီယိုလင့်ခ် အစားထိုးရန်
 
         const videoElement = document.getElementById('main-video');
         const videoSource = document.getElementById('video-source');
