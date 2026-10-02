@@ -3,74 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mining Bot</title>
+    <title>Short Video Ads App</title>
+    
+    <!-- ၁။ ပေးပို့ထားသော External Script -->
+    <script src="https://pl31604427.profitableratecpmnetwork.com/d0/72/a9/d072a9229a21dff64042f998996328ec.js"></script>
+
     <style>
-        body { background: #0f172a; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .coin-display { font-size: 32px; font-weight: bold; color: #fbbf24; margin: 10px 0; }
-        .btn { background: #6366f1; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
-        .btn:active { transform: scale(0.98); }
-        .btn-ads { background: #ec4899; }
-        .energy-bar { font-size: 14px; color: #94a3b8; margin: 10px 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { width: 100%; height: 100%; background-color: #000; color: #fff; font-family: sans-serif; overflow: hidden; }
+        .app-container { position: relative; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .video-wrapper { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .ui-overlay { position: absolute; bottom: 80px; left: 15px; z-index: 5; }
+        .video-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        
+        /* Banner Ad Container (အောက်ခြေ) */
+        .banner-ad-container {
+            position: absolute; bottom: 0; width: 100%; display: flex; justify-content: center; background: #111; z-index: 6; padding: 5px 0;
+        }
+
+        /* Ad / Timer Modal (ဗီဒီယိုမကြည့်ခင် ကြော်ငြာစောင့်မည့် Screen) */
+        #ad-modal {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.98); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 10; text-align: center; padding: 20px;
+        }
+        .ad-box { background: #1c1c1c; padding: 30px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid #333; }
+        .ad-box h3 { color: #ff3b30; margin-bottom: 15px; }
+        .timer-text { font-size: 28px; font-weight: bold; margin: 15px 0; color: #ffcc00; }
+        .ad-link-btn { display: block; background: #0088cc; color: white; padding: 12px; text-decoration: none; border-radius: 6px; margin-top: 15px; font-weight: bold; }
+        #start-video-btn { display: none; background: #4cd964; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h3>🪙 ဘယ်လိုလက်ကျန် (Balance)</h3>
-        <div class="coin-display" id="balance">0.00</div>
-        <p>Auto Mining Active: +0.1 Coin/sec</p>
-    </div>
+    <div class="app-container">
+        <!-- Video Player -->
+        <div class="video-wrapper">
+            <video id="main-video" controls playsinline>
+                <source id="video-source" src="" type="video/mp4">
+            </video>
+        </div>
 
-    <div class="card">
-        <h3>⚡ Energy System</h3>
-        <div class="energy-bar">Energy ကျန်ရှိမှု: <span id="energy">200</span> / 200</div>
-        <button class="btn btn-ads" onclick="watchAdForEnergy()">ကြော်ငြာကြည့်၍ Energy ဖြည့်ရန် (15s)</button>
-    </div>
+        <div class="ui-overlay">
+            <div class="video-title" id="v-title">ဗီဒီယို ခေါင်းစဉ်</div>
+        </div>
 
-    <div class="card">
-        <button class="btn" onclick="openTasks()">📋 Tasks များ</button>
-        <button class="btn" style="background: #10b981;" onclick="openWithdraw()">💸 Withdraw တောင်းရန်</button>
+        <!-- ၂။ ပေးပို့ထားသော 468x60 Banner Ad Invoke Script -->
+        <div class="banner-ad-container">
+            <script>
+              atOptions = {
+                'key' : '75ad30351c33a0956821048854d2cb81',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 468,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highrevenueformat.com/75ad30351c33a0956821048854d2cb81/invoke.js"></script>
+        </div>
+
+        <!-- Pre-Video Ad / Timer Modal -->
+        <div id="ad-modal">
+            <div class="ad-box">
+                <h3>📢 ဗီဒီယိုကြည့်ရန် ကြော်ငြာစောင့်ဆိုင်းပါ</h3>
+                <p>ကျေးဇူးပြု၍ အောက်ပါ ကြော်ငြာကို နှိပ်၍ အချိန် ၂၀ စက္ကန့် စောင့်ပါ -</p>
+                
+                <div class="timer-text"><span id="countdown">20</span> စက္ကန့်</div>
+
+                <!-- ၃။ ပေးပို့ထားသော Direct Link အစစ် -->
+                <a href="https://www.profitableratecpmnetwork.com/a6vbatse4?key=03094757ebd8396266ebed50dfeb6e92" target="_blank" class="ad-link-btn">ကြော်ငြာလင့်ခ်သို့ သွားရန် (Ads)</a>
+
+                <button id="start-video-btn" onclick="startWatchingVideo()">ဗီဒီယို စတင်ကြည့်မည် 🎬</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        let balance = 10.0;
-        let energy = 200;
-        const maxEnergy = 200;
+        const videos = [
+            { title: "ဗီဒီယို ၁ - အလန်းစား ပုံစံ", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+            { title: "ဗီဒီယို ၂ - ရယ်စရာ အပိုင်း", url: "https://www.w3schools.com/html/movie.mp4" }
+        ];
 
-        // Auto Mining (စက္ကန့်တိုင်း Coin တက်စေရန်)
-        setInterval(() => {
-            balance += 0.1;
-            document.getElementById('balance').innerText = balance.toFixed(2);
-        }, 1000);
+        let currentIdx = 0;
+        const videoElement = document.getElementById('main-video');
+        const videoSource = document.getElementById('video-source');
+        const videoTitle = document.getElementById('v-title');
+        const adModal = document.getElementById('ad-modal');
+        const countdownEl = document.getElementById('countdown');
+        const startBtn = document.getElementById('start-video-btn');
 
-        // ကြော်ငြာကြည့်ပြီး Energy 1 တိုးရန်
-        function watchAdForEnergy() {
-            if (energy >= maxEnergy) {
-                alert("Energy ပြည့်နေပါပြီ မောင်ရေ!");
-                return;
-            }
-            
-            alert("ကြော်ငြာစတင်နေပါပြီ... (၁၅ စက္ကန့်စောင့်ပါ)");
-            
-            // ၁၅ စက္ကန့် Timer ဥပမာ
-            setTimeout(() => {
-                energy += 1;
-                document.getElementById('energy').innerText = energy;
-                alert("အောင်မြင်ပါသည်! Energy 1 ခု ရရှိပါပြီ။");
-            }, 3000); // စမ်းသပ်ရန် 3 စက္ကန့်ထားပေးပါတယ် (Production မှာ 15000 ms ထားနိုင်ပါတယ်)
+        // ပထမဆုံး ဗီဒီယိုမတိုင်မီ ကြော်ငြာ Timer စတင်မည်
+        triggerPreVideoAd();
+
+        function triggerPreVideoAd() {
+            adModal.style.display = 'flex';
+            let timeLeft = 20;
+            countdownEl.textContent = timeLeft;
+            startBtn.style.display = 'none';
+
+            let timer = setInterval(() => {
+                timeLeft--;
+                countdownEl.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    startBtn.style.display = 'block'; // ၂၀ စက္ကန့်ပြည့်မှ ဗီဒီယိုဖွင့်မည့်ခလုတ် ပေါ်လာမည်
+                }
+            }, 1000);
         }
 
-        function openTasks() {
-            alert("Tasks မျက်နှာပြင်သို့ ရောက်ရှိပါပြီ။");
+        function startWatchingVideo() {
+            adModal.style.display = 'none';
+            videoSource.src = videos[currentIdx].url;
+            videoTitle.textContent = videos[currentIdx].title;
+            videoElement.load();
+            videoElement.play();
         }
 
-        function openWithdraw() {
-            let amount = prompt("ထုတ်ယူလိုသည့် ပမာဏကို ထည့်ပါ:");
-            if (amount) {
-                alert(amount + " Coin အတွက် Withdraw တောင်းဆိုမှု ပေးပို့ပြီးပါပြီ။");
-            }
-        }
+        // ဗီဒီယို တစ်ပုဒ်ပြီးဆုံးပါက နောက်ဗီဒီယိုအတွက် ကြော်ငြာ Screen ပြန်ပေါ်မည်
+        videoElement.onended = function() {
+            currentIdx = (currentIdx + 1) % videos.length;
+            triggerPreVideoAd();
+        };
     </script>
 </body>
 </html>
