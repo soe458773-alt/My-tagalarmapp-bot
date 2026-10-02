@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Short Video Ads App</title>
     
-    <!-- ၁။ ပေးပို့ထားသော External Script -->
+    <!-- Banner Ad Script -->
     <script src="https://pl31604427.profitableratecpmnetwork.com/d0/72/a9/d072a9229a21dff64042f998996328ec.js"></script>
 
     <style>
@@ -15,14 +15,12 @@
         .video-wrapper { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         video { width: 100%; height: 100%; object-fit: cover; }
         .ui-overlay { position: absolute; bottom: 80px; left: 15px; z-index: 5; }
-        .video-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        .video-title { font-size: 18px; font-weight: bold; margin-bottom: 5px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); color: #00ffcc; }
         
-        /* Banner Ad Container (အောက်ခြေ) */
         .banner-ad-container {
             position: absolute; bottom: 0; width: 100%; display: flex; justify-content: center; background: #111; z-index: 6; padding: 5px 0;
         }
 
-        /* Ad / Timer Modal (ဗီဒီယိုမကြည့်ခင် ကြော်ငြာစောင့်မည့် Screen) */
         #ad-modal {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.98); display: flex; flex-direction: column;
@@ -38,7 +36,6 @@
 <body>
 
     <div class="app-container">
-        <!-- Video Player -->
         <div class="video-wrapper">
             <video id="main-video" controls playsinline>
                 <source id="video-source" src="" type="video/mp4">
@@ -46,10 +43,10 @@
         </div>
 
         <div class="ui-overlay">
+            <!-- Telegram ကနေ ပါလာမယ့် ဗီဒီယိုနာမည်ကို ဒီနေရာမှာ ဖော်ပြပေးမည် -->
             <div class="video-title" id="v-title">ဗီဒီယို ခေါင်းစဉ်</div>
         </div>
 
-        <!-- ၂။ ပေးပို့ထားသော 468x60 Banner Ad Invoke Script -->
         <div class="banner-ad-container">
             <script>
               atOptions = {
@@ -63,7 +60,6 @@
             <script src="https://www.highrevenueformat.com/75ad30351c33a0956821048854d2cb81/invoke.js"></script>
         </div>
 
-        <!-- Pre-Video Ad / Timer Modal -->
         <div id="ad-modal">
             <div class="ad-box">
                 <h3>📢 ဗီဒီယိုကြည့်ရန် ကြော်ငြာစောင့်ဆိုင်းပါ</h3>
@@ -71,7 +67,7 @@
                 
                 <div class="timer-text"><span id="countdown">20</span> စက္ကန့်</div>
 
-                <!-- ၃။ ပေးပို့ထားသော Direct Link အစစ် -->
+                <!-- Direct Link -->
                 <a href="https://www.profitableratecpmnetwork.com/a6vbatse4?key=03094757ebd8396266ebed50dfeb6e92" target="_blank" class="ad-link-btn">ကြော်ငြာလင့်ခ်သို့ သွားရန် (Ads)</a>
 
                 <button id="start-video-btn" onclick="startWatchingVideo()">ဗီဒီယို စတင်ကြည့်မည် 🎬</button>
@@ -80,20 +76,23 @@
     </div>
 
     <script>
-        const videos = [
-            { title: "ဗီဒီယို ၁ - အလန်းစား ပုံစံ", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-            { title: "ဗီဒီယို ၂ - ရယ်စရာ အပိုင်း", url: "https://www.w3schools.com/html/movie.mp4" }
-        ];
+        // URL ထဲက ဗီဒီယိုနာမည်ကို ဖမ်းယူခြင်း
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoTitleParam = urlParams.get('title');
 
-        let currentIdx = 0;
+        const videoTitle = videoTitleParam ? decodeURIComponent(videoTitleParam) : "ဗီဒီယိုအသစ်";
+        document.getElementById('v-title').textContent = videoTitle;
+
+        // ဗီဒီယို Source (လိုအပ်ပါက URL အလိုက် ပြောင်းလဲနိုင်သည်)
+        const videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4";
+
         const videoElement = document.getElementById('main-video');
         const videoSource = document.getElementById('video-source');
-        const videoTitle = document.getElementById('v-title');
         const adModal = document.getElementById('ad-modal');
         const countdownEl = document.getElementById('countdown');
         const startBtn = document.getElementById('start-video-btn');
 
-        // ပထမဆုံး ဗီဒီယိုမတိုင်မီ ကြော်ငြာ Timer စတင်မည်
+        // ပထမဆုံး ဝင်လာချင်း ကြော်ငြာ Timer စတင်မည်
         triggerPreVideoAd();
 
         function triggerPreVideoAd() {
@@ -108,24 +107,17 @@
 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    startBtn.style.display = 'block'; // ၂၀ စက္ကန့်ပြည့်မှ ဗီဒီယိုဖွင့်မည့်ခလုတ် ပေါ်လာမည်
+                    startBtn.style.display = 'block'; // ၂၀ စက္ကန့်ပြည့်မှ ဗီဒီယိုကြည့်မည့်ခလုတ် ပေါ်မည်
                 }
             }, 1000);
         }
 
         function startWatchingVideo() {
             adModal.style.display = 'none';
-            videoSource.src = videos[currentIdx].url;
-            videoTitle.textContent = videos[currentIdx].title;
+            videoSource.src = videoUrl;
             videoElement.load();
             videoElement.play();
         }
-
-        // ဗီဒီယို တစ်ပုဒ်ပြီးဆုံးပါက နောက်ဗီဒီယိုအတွက် ကြော်ငြာ Screen ပြန်ပေါ်မည်
-        videoElement.onended = function() {
-            currentIdx = (currentIdx + 1) % videos.length;
-            triggerPreVideoAd();
-        };
     </script>
 </body>
 </html>
