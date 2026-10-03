@@ -3,145 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Video Player & Ads</title>
-    
-    <!-- Banner Ad Script (ပေးထားသော 728x90 Script အသစ်) -->
-    <script>
-      atOptions = {
-        'key' : 'ec6ab745de4ed805bc70c1157f580126',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highrevenueformat.com/ec6ab745de4ed805bc70c1157f580126/invoke.js"></script>
-
+    <title>Smart Hub - Video Player</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; background: #0b0f19; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
-        .app-container { position: relative; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .video-wrapper { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        video { width: 100%; height: 100%; object-fit: cover; }
-        
-        .ui-overlay { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 5; background: rgba(15, 23, 42, 0.75); padding: 12px 18px; border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .video-title { font-size: 15px; font-weight: 600; color: #38bdf8; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
-        
-        .banner-ad-container {
-            position: absolute; bottom: 0; width: 100%; display: flex; justify-content: center; background: #0f172a; z-index: 6; padding: 5px 0; border-top: 1px solid rgba(255,255,255,0.05);
-            overflow: hidden;
-        }
-
-        #ad-modal {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.95); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 10; text-align: center; padding: 20px;
-            backdrop-filter: blur(15px);
-        }
-        .ad-box { 
-            background: linear-gradient(145deg, #1e293b, #0f172a); 
-            padding: 35px 25px; border-radius: 20px; width: 90%; max-width: 360px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
-        }
-        .ad-box h3 { color: #f87171; margin-bottom: 10px; font-size: 20px; font-weight: 700; }
-        .ad-box p { color: #94a3b8; font-size: 13px; margin-bottom: 15px; }
-        
-        .timer-text { font-size: 32px; font-weight: 800; margin: 15px 0; color: #fbbf24; }
-        
-        .ad-link-btn { 
-            display: block; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 14px; text-decoration: none; border-radius: 12px; margin-top: 15px; font-weight: bold; font-size: 15px;
-            box-shadow: 0 6px 0 #075985, 0 10px 20px rgba(0,0,0,0.4);
-            cursor: pointer;
-        }
-        .ad-link-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #075985; }
-
-        #start-video-btn { 
-            display: none; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 15px; 
-            box-shadow: 0 6px 0 #15803d, 0 10px 20px rgba(0,0,0,0.4);
-        }
-        #start-video-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #15803d; }
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .container { margin-top: 20px; background: #1a1a1a; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-width: 400px; margin-left: auto; margin-right: auto; }
+        h2 { color: #00ffcc; font-size: 18px; }
+        #timerText { font-size: 15px; margin: 10px 0; color: #ffcc00; }
+        #watchBtn { display: none; background: #00C853; color: white; padding: 14px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; margin-top: 20px; width: 100%; box-sizing: border-box; }
+        .ad-box { margin: 15px 0; background: #252525; border-radius: 8px; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 310px; }
     </style>
+
+    <!-- ကိုကိုပေးထားသော Script (၁) -->
+    <script data-cfasync="false" src="https://bauval.org/14/4587f6ec99043b05ff46ce9714215c21"></script>
 </head>
 <body>
 
-    <div class="app-container">
-        <div class="video-wrapper">
-            <video id="main-video" controls playsinline>
-                <source id="video-source" src="" type="video/mp4">
-            </video>
+    <div class="container">
+        <h2>🎥 ဗီဒီယိုကြည့်ရှုရန် ခဏစောင့်ပါ</h2>
+        <p id="timerText">ကျေးဇူးပြု၍ ကြော်ငြာကို ၂၀ စက္ကန့် စောင့်ကြည့်ပေးပါ...</p>
+        <h1 id="countdown" style="font-size: 40px; color: #ff5722; margin: 10px 0;">20</h1>
+        
+        <!-- ကိုကိုပေးထားသော Script (၂) Banner Ad 160x300 ထည့်သွင်းသည့်နေရာ -->
+        <div class="ad-box">
+            <script>
+              atOptions = {
+                'key' : '372536289b0474a166e343269e91403a',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script src="https://bauval.org/22/372536289b0474a166e343269e91403a"></script>
         </div>
 
-        <div class="ui-overlay">
-            <div class="video-title" id="v-title">✨ ဗီဒီယိုအမည် ဖော်ပြမည်...</div>
-        </div>
-
-        <!-- Banner Ad Container -->
-        <div class="banner-ad-container" id="banner-box"></div>
-
-        <div id="ad-modal">
-            <div class="ad-box">
-                <h3>💎 𝖵𝖨𝖣𝖤𝖮 𝖫𝖮𝖢𝖪𝖤𝖣</h3>
-                <p>ကျေးဇူးပြု၍ အောက်ပါ ကြော်ငြာလင့်ခ်ကို နှိပ်၍ အချိန် ၂၀ စက္ကန့် စောင့်ပါ</p>
-                
-                <div class="timer-text"><span id="countdown">20</span> စက္ကန့်</div>
-
-                <!-- Direct Link ခလုတ် (နှိပ်လိုက်လျှင် ပွင့်ရန်) -->
-                <a onclick="openDirectAd()" class="ad-link-btn">✨ ကြော်ငြာလင့်ခ်သို့ သွားရန် 🚀</a>
-
-                <button id="start-video-btn" onclick="startWatchingVideo()">▶️ ဗီဒီယို စတင်ကြည့်မည် 🎬</button>
-            </div>
-        </div>
+        <a id="watchBtn" href="#" target="_blank">👉 ဗီဒီယိုကြည့်ရန် နှိပ်ပါ</a>
     </div>
 
     <script>
-        // 🔗 ပေးထားသော Adsterra Direct Link အမှန်
-        const directAdUrl = "https://www.profitableratecpmnetwork.com/a6vbatse4?key=03094757ebd8396266ebed50dfeb6e92";
-
-        function openDirectAd() {
-            // New Tab ဖြင့် တိုက်ရိုက်ပွင့်စေရန်
-            window.open(directAdUrl, '_blank');
-        }
-
-        // URL ထဲမှ ဗီဒီယိုနာမည်ကို ဖမ်းယူဖော်ပြခြင်း
+        // URL ထဲက Video Link နဲ့ Admin ထည့်တဲ့ Ads Link ကို ဖမ်းယူခြင်း
         const urlParams = new URLSearchParams(window.location.search);
-        const videoTitleParam = urlParams.get('title');
-        const videoTitle = videoTitleParam ? decodeURIComponent(videoTitleParam) : "ဗီဒီယိုအသစ်";
-        document.getElementById('v-title').textContent = "📌 " + videoTitle;
+        const videoUrl = urlParams.get('video') ? decodeURIComponent(urlParams.get('video')) : "https://t.me/smarthubv1";
+        const adsUrl = urlParams.get('ad') ? decodeURIComponent(urlParams.get('ad')) : "";
 
-        const videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // လိုအပ်ပါက ဗီဒီယိုလင့်ခ် အစားထိုးရန်
-
-        const videoElement = document.getElementById('main-video');
-        const videoSource = document.getElementById('video-source');
-        const adModal = document.getElementById('ad-modal');
+        const watchBtn = document.getElementById('watchBtn');
+        
+        // ၂၀ စက္ကန့် တိုင်မာ စတင်ခြင်း
+        let timeLeft = 20;
         const countdownEl = document.getElementById('countdown');
-        const startBtn = document.getElementById('start-video-btn');
+        const timerText = document.getElementById('timerText');
 
-        triggerPreVideoAd();
-
-        function triggerPreVideoAd() {
-            adModal.style.display = 'flex';
-            let timeLeft = 20;
+        let timer = setInterval(function() {
+            timeLeft--;
             countdownEl.textContent = timeLeft;
-            startBtn.style.display = 'none';
-
-            let timer = setInterval(() => {
-                timeLeft--;
-                countdownEl.textContent = timeLeft;
-
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    startBtn.style.display = 'block';
-                }
-            }, 1000);
-        }
-
-        function startWatchingVideo() {
-            adModal.style.display = 'none';
-            videoSource.src = videoUrl;
-            videoElement.load();
-            videoElement.play();
-        }
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerText.textContent = "✅ စောင့်ဆိုင်းပြီးပါပြီ၊ အောက်ပါခလုတ်ကို နှိပ်ပါ";
+                countdownEl.style.display = 'none';
+                
+                // Admin ထည့်ပေးထားသော Ads link သို့မဟုတ် Video link သို့ သွားရန် ချိတ်ပေးခြင်း
+                watchBtn.href = adsUrl ? adsUrl : videoUrl;
+                watchBtn.style.display = 'inline-block';
+            }
+        }, 1000);
     </script>
 </body>
 </html>
